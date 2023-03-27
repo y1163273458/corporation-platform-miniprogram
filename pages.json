@@ -1,14 +1,60 @@
 {
-	"pages": [{
-		"path": "pages/index/index",
-		"style": {
-			"navigationBarTitleText": "uni-app"
-		}
-	}],
+	"pages": [
+    {
+            "path" : "pages/home/home",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{ 
+            "path" : "pages/my/my",
+            "style" :                                                                                    
+            {
+                
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{ 
+            "path" : "pages/message/message",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"tabBar": {
+		"fontSize": "100px",
+		"color": "#f9cfd1",
+		"selectedColor": "#f5afb1",
+		"list": [
+			{
+				"pagePath": "pages/home/home",
+				"text": "首页",
+				"iconPath": "static/tabbar-icon/home.png",
+				"selectedIconPath": "static/tabbar-icon/home-active.png"
+			},
+			{
+				"pagePath": "pages/message/message",
+				"text": "通知",
+				"iconPath": "static/tabbar-icon/message.png",
+				"selectedIconPath": "static/tabbar-icon/message-active.png"
+			},
+			{
+				"pagePath": "pages/my/my",
+				"text": "我的",
+				"iconPath": "static/tabbar-icon/my.png",
+				"selectedIconPath": "static/tabbar-icon/my-active.png"
+			}
+		]
+	},
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "社团共享平台",
+		"navigationBarBackgroundColor": "#ffabc6",
 		"backgroundColor": "#F8F8F8",
 		"app-plus": {
 			"background": "#efeff4"
