@@ -12,7 +12,6 @@
             "path" : "pages/my/my",
             "style" :                                                                                    
             {
-                
                 "enablePullDownRefresh": false
             }
             
@@ -25,9 +24,16 @@
             }
             
         }
+        ,{
+            "path" : "pages/activity/activity",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"tabBar": {
-		"fontSize": "100px",
 		"color": "#f9cfd1",
 		"selectedColor": "#f5afb1",
 		"list": [
@@ -36,6 +42,12 @@
 				"text": "首页",
 				"iconPath": "static/tabbar-icon/home.png",
 				"selectedIconPath": "static/tabbar-icon/home-active.png"
+			},
+			{
+				"pagePath": "pages/activity/activity",
+				"text": "我的活动",
+				"iconPath": "static/tabbar-icon/activity.png",
+				"selectedIconPath": "static/tabbar-icon/activity-active.png"
 			},
 			{
 				"pagePath": "pages/message/message",
@@ -57,7 +69,10 @@
 		"navigationBarBackgroundColor": "#ffabc6",
 		"backgroundColor": "#F8F8F8",
 		"app-plus": {
-			"background": "#efeff4"
+			"background": "#efeff4",
+			"titleNView": {
+				"titleAlign": "center"
+			}
 		}
 	}
 }
