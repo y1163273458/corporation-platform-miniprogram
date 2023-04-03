@@ -6,23 +6,21 @@
 				搜索框占位
 			</view>
 			<view class="swiper-View">
-				<u-swiper :list="swiperList" indicator="true" indicatorMode="dot" circular="true" radius="true"
-					previousMargin="70rpx" nextMargin="70rpx"></u-swiper>
+				<u-swiper :list="swiperList" keyName="img"  indicator="true" indicatorMode="dot" circular="true" radius="true"
+					previousMargin="70rpx" nextMargin="70rpx" @click="goToSwiperPage" @change="swiperChange"></u-swiper>
 			</view>
 			<view>
 				<view class="infoPage-View-Flex">
 					<view class="infoPage-View" v-for="(item,index) in infoPageList" :key="index">
-						<image class="infoPage-img" :src="item.img_url" mode="aspectFit"></image>
+						<image class="infoPage-img" :src="item.img_url" mode="aspectFit" @click="goToInfoPage(item.url)"></image>
 						<text>{{item.title}}</text>
 					</view>
 				</view>
 			</view>
-			<!-- 此处为校内活动段落 -->
-			<view class="section-Title-View">
-				热门活动
-			</view>
+			<!-- 此处为最新活动段落 -->
+			<view class="section-Title-View">最新活动</view>
 			<view class="activity-View-Flex">
-				<view class="activity-List-View" v-for="(item,index) in activityList" :key="index">
+				<view class="activity-List-View" v-for="(item,index) in activityList" :key="index" @click="goToActivityPage(item.url)">
 					<image class="activity-Img" :src="item.img_url" mode="aspectFit">
 						<text class="activity-Status">{{item.status}}</text>
 					</image>
@@ -36,120 +34,178 @@
 </template>
 
 <script>
-	import {
+	import link from '../../uni_modules/uview-ui/libs/config/props/link';
+import {
 		methods
 	} from '../../uni_modules/uview-ui/libs/mixin/mixin';
 	export default {
 		data() {
 			return {
 				swiperList: [
-					"/static/swiper-img/1.jpg",
-					"/static/swiper-img/2.png",
-					"/static/swiper-img/3.jpeg",
-					"/static/swiper-img/4.png"
+					{
+						img:"/static/swiper-img/1.jpg",
+						url:"swiperPage1"
+					},
+					{
+						img:"/static/swiper-img/2.png",
+						url:"swiperPage2"
+					},
+					{
+						img:"/static/swiper-img/3.jpg",
+						url:"swiperPage3"
+					},
+					{
+						img:"/static/swiper-img/4.png",
+						url:"swiperPage4"
+					}
 				],
+				swiperIndex: 0,
 				infoPageList: [{
 					title: "最新资讯",
-					url: "",
+					url: "infoPage1",
 					img_url: "/static/infoPage-img/news.png"
 				}, {
 					title: "院校活动",
-					url: "",
+					url: "infoPage2",
 					img_url: "/static/infoPage-img/activity-info.png"
 				}, {
 					title: "热门活动",
-					url: "",
+					url: "infoPage3",
 					img_url: "/static/infoPage-img/hot.png"
 				}, {
-					title: "院校活动",
-					url: "",
-					img_url: "/static/infoPage-img/activity-info.png"
+					title: "探索",
+					url: "infoPage4",
+					img_url: "/static/infoPage-img/explore.png"
 				}],
 				activityList: [{
 					title: "活动1",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
+					url: "活动1",
 					img_url: "/static/swiper-img/1.jpg"
 				}, {
 					title: "活动2",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
+					url: "活动2",
 					img_url: "/static/swiper-img/2.png"
 				}, {
 					title: "活动3",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
-					img_url: "/static/swiper-img/3.jpeg"
+					url: "活动3",
+					img_url: "/static/swiper-img/3.jpg"
 				}, {
 					title: "活动4",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
+					url: "活动4",
 					img_url: "/static/swiper-img/4.png"
 				}, {
 					title: "活动1",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
+					url: "活动1",
 					img_url: "/static/swiper-img/1.jpg"
 				}, {
 					title: "活动2",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
+					url: "活动2",
 					img_url: "/static/swiper-img/2.png"
 				}, {
 					title: "活动3",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
-					img_url: "/static/swiper-img/3.jpeg"
+					url: "活动3",
+					img_url: "/static/swiper-img/3.jpg"
 				}, {
 					title: "活动4",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
+					url: "活动4",
 					img_url: "/static/swiper-img/4.png"
 				}, {
 					title: "活动1",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
-					url: "#",
+					url: "活动1",
 					img_url: "/static/swiper-img/1.jpg"
 				}, {
 					title: "活动2",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
+					url: "活动2",
 					img_url: "/static/swiper-img/2.png"
 				}, {
 					title: "活动3",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
-					img_url: "/static/swiper-img/3.jpeg"
+					url: "活动3",
+					img_url: "/static/swiper-img/3.jpg"
 				}, {
 					title: "活动4",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
 					status: "报名中",
-					url: "#",
+					url: "活动4",
 					img_url: "/static/swiper-img/4.png"
 				}]
 			};
+		},
+		methods:{
+			// 点击轮播图时的页面跳转函数
+			goToSwiperPage(){
+				const page_url = this.swiperList[this.swiperIndex].url;
+				console.log("goToSwiperPage" + this.swiperList[this.swiperIndex].url);
+				uni.navigateTo({
+					url:page_url,
+					success: (res) => {
+						console.log("前往失败")
+					},
+					fail: (res) => {
+						console.log("前往失败")
+					}
+				})
+			},
+			swiperChange(e){
+				this.swiperIndex = e.current
+				console.log(this.swiperIndex)
+			},
+			goToInfoPage(page_url){
+				console.log("goToInfoPage" + page_url);
+				uni.navigateTo({
+					url:page_url,
+					success: (res) => {
+						console.log("前往失败")
+					},
+					fail: (res) => {
+						console.log("前往失败")
+					}
+				})
+			},
+			goToActivityPage(page_url){
+				console.log("goToActivityPage" + page_url);
+				uni.navigateTo({
+					url:page_url,
+					success: (res) => {
+						console.log("前往失败")
+					},
+					fail: (res) => {
+						console.log("前往失败")
+					}
+				})
+			}
 		}
 	}
 </script>
@@ -194,6 +250,7 @@
 		font-size: 40rpx;
 		font-weight: bold;
 		margin-top: 40rpx;
+		margin-left: 20rpx;
 	}
 
 	.activity-View-Flex {
