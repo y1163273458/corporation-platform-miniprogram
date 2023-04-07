@@ -1,18 +1,20 @@
 <template>
 	<view>
-		<u-list>
-			<!-- 搜索框 -->
-			<view class="search-Box-View">
-				搜索框占位
-			</view>
+		<!-- 搜索框 -->
+		<view class="search-Box-View">
+			搜索框占位
+		</view>
+		<u-list class="uList">
 			<view class="swiper-View">
-				<u-swiper :list="swiperList" keyName="img"  indicator="true" indicatorMode="dot" circular="true" radius="true"
-					previousMargin="70rpx" nextMargin="70rpx" @click="goToSwiperPage" @change="swiperChange"></u-swiper>
+				<u-swiper :list="swiperList" keyName="img" indicator="true" indicatorMode="dot" circular="true"
+					radius="true" previousMargin="70rpx" nextMargin="70rpx" @click="goToSwiperPage"
+					@change="swiperChange"></u-swiper>
 			</view>
 			<view>
 				<view class="infoPage-View-Flex">
 					<view class="infoPage-View" v-for="(item,index) in infoPageList" :key="index">
-						<image class="infoPage-img" :src="item.img_url" mode="aspectFit" @click="goToInfoPage(item.url)"></image>
+						<image class="infoPage-img" :src="item.img_url" mode="aspectFit"
+							@click="goToInfoPage(item.url)"></image>
 						<text>{{item.title}}</text>
 					</view>
 				</view>
@@ -20,7 +22,8 @@
 			<!-- 此处为最新活动段落 -->
 			<view class="section-Title-View">最新活动</view>
 			<view class="activity-View-Flex">
-				<view class="activity-List-View" v-for="(item,index) in activityList" :key="index" @click="goToActivityPage(item.url)">
+				<view class="activity-List-View" v-for="(item,index) in activityList" :key="index"
+					@click="goToActivityPage(item.url)">
 					<image class="activity-Img" :src="item.img_url" mode="aspectFit">
 						<text class="activity-Status">{{item.status}}</text>
 					</image>
@@ -29,34 +32,34 @@
 					<text class="activity-type">{{item.type}}</text>
 				</view>
 			</view>
+			<view style="height: 200rpx;"></view>
 		</u-list>
 	</view>
 </template>
 
 <script>
 	import link from '../../uni_modules/uview-ui/libs/config/props/link';
-import {
+	import {
 		methods
 	} from '../../uni_modules/uview-ui/libs/mixin/mixin';
 	export default {
 		data() {
 			return {
-				swiperList: [
-					{
-						img:"/static/swiper-img/1.jpg",
-						url:"swiperPage1"
+				swiperList: [{
+						img: "/static/swiper-img/1.jpg",
+						url: "swiperPage1"
 					},
 					{
-						img:"/static/swiper-img/2.png",
-						url:"swiperPage2"
+						img: "/static/swiper-img/2.png",
+						url: "swiperPage2"
 					},
 					{
-						img:"/static/swiper-img/3.jpg",
-						url:"swiperPage3"
+						img: "/static/swiper-img/3.jpg",
+						url: "swiperPage3"
 					},
 					{
-						img:"/static/swiper-img/4.png",
-						url:"swiperPage4"
+						img: "/static/swiper-img/4.png",
+						url: "swiperPage4"
 					}
 				],
 				swiperIndex: 0,
@@ -137,6 +140,7 @@ import {
 					title: "活动1",
 					date_Time: "0000.00.00 - 0000.00.00",
 					type: "文体",
+					status: "报名中",
 					url: "活动1",
 					img_url: "/static/swiper-img/1.jpg"
 				}, {
@@ -163,13 +167,13 @@ import {
 				}]
 			};
 		},
-		methods:{
+		methods: {
 			// 点击轮播图时的页面跳转函数
-			goToSwiperPage(){
+			goToSwiperPage() {
 				const page_url = this.swiperList[this.swiperIndex].url;
 				console.log("goToSwiperPage" + this.swiperList[this.swiperIndex].url);
 				uni.navigateTo({
-					url:page_url,
+					url: page_url,
 					success: (res) => {
 						console.log("前往失败")
 					},
@@ -178,14 +182,14 @@ import {
 					}
 				})
 			},
-			swiperChange(e){
+			swiperChange(e) {
 				this.swiperIndex = e.current
 				console.log(this.swiperIndex)
 			},
-			goToInfoPage(page_url){
+			goToInfoPage(page_url) {
 				console.log("goToInfoPage" + page_url);
 				uni.navigateTo({
-					url:page_url,
+					url: page_url,
 					success: (res) => {
 						console.log("前往失败")
 					},
@@ -194,10 +198,10 @@ import {
 					}
 				})
 			},
-			goToActivityPage(page_url){
+			goToActivityPage(page_url) {
 				console.log("goToActivityPage" + page_url);
 				uni.navigateTo({
-					url:page_url,
+					url: page_url,
 					success: (res) => {
 						console.log("前往失败")
 					},
@@ -214,10 +218,19 @@ import {
 	.search-Box-View {
 		height: 100rpx;
 		width: 750rpx;
-		margin-top: 25rpx;
+		margin-top: 35rpx;
+		margin-bottom: 35rpx;
 		border: 1px solid red;
 		text-align: center;
 		line-height: 100rpx;
+		position: relative;
+		background: white;
+	}
+
+	.uList {
+		position: relative;
+		margin-top: 170rpx;
+		padding-bottom: 200rpx;
 	}
 
 	.swiper-View {
@@ -229,11 +242,11 @@ import {
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: space-between;
-		margin-top: 60rpx;
+		margin-top: 40rpx;
 
 		.infoPage-View {
 			height: 180rpx;
-			width: 150rpx;
+			width: 149rpx;
 			margin-left: 15rpx;
 			text-align: center;
 		}
@@ -250,7 +263,7 @@ import {
 		font-size: 40rpx;
 		font-weight: bold;
 		margin-top: 40rpx;
-		margin-left: 20rpx;
+		margin-left: 30rpx;
 	}
 
 	.activity-View-Flex {
@@ -258,18 +271,17 @@ import {
 		flex-direction: row;
 		flex-wrap: wrap;
 		justify-content: space-between;
-		margin-left: 10rpx;
 		position: relative;
+		max-width: 690rpx;
+		margin-left: 30rpx;
 
 		.activity-List-View {
 			height: 300rpx;
 			min-height: 300rpx;
 			width: 330rpx;
 			min-width: 330rpx;
+			max-width: 330rpx;
 			margin-top: 40rpx;
-			margin-left: 10px;
-			margin-left: 10px;
-			margin-right: 10px;
 			position: relative;
 		}
 
@@ -282,7 +294,7 @@ import {
 			min-width: 100rpx;
 			top: 20rpx;
 			left: 20rpx;
-			border: 1rpx solid black ;
+			border: 1rpx solid black;
 			border-radius: 5rpx;
 			background: rgba(255, 255, 255, 0.7);
 			position: absolute;
@@ -292,8 +304,7 @@ import {
 			display: block;
 			height: 200rpx;
 			min-height: 200rpx;
-			width: 330rpx;
-			margin-left: 10rpx;
+			width: 320rpx;
 			border-radius: 20rpx;
 
 		}
@@ -303,7 +314,6 @@ import {
 			font-size: 25rpx;
 			line-height: 25rpx;
 			height: 30rpx;
-			margin-left: 10rpx;
 		}
 
 		.activity-dateTime {
@@ -311,7 +321,6 @@ import {
 			font-size: 20rpx;
 			line-height: 20rpx;
 			height: 30rpx;
-			margin-left: 10rpx;
 		}
 
 		.activity-type {
@@ -319,7 +328,6 @@ import {
 			font-size: 23rpx;
 			line-height: 23rpx;
 			height: 25rpx;
-			margin-left: 10rpx;
 		}
 	}
 </style>
