@@ -1,5 +1,13 @@
 {
 	"pages": [{
+            "path" : "pages/other/login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        },{
 		"path": "pages/home/home",
 		"style": {
 			"enablePullDownRefresh": false,
@@ -24,7 +32,8 @@
 			"enablePullDownRefresh": false
 		}
 
-	}],
+	}
+    ],
 	"tabBar": {
 		"color": "#f9cfd1",
 		"selectedColor": "#f5afb1",
