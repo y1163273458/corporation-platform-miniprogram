@@ -1,10 +1,10 @@
 <template>
 	<view>
-		<!-- 搜索框 -->
-		<view class="search-Box-View">
-			搜索框占位
-		</view>
 		<u-list class="uList">
+			<!-- 搜索框 -->
+			<view class="search-Box-View">
+				搜索框占位
+			</view>
 			<view class="swiper-View">
 				<u-swiper :list="swiperList" keyName="img" indicator="true" indicatorMode="dot" circular="true"
 					radius="true" previousMargin="70rpx" nextMargin="70rpx" @click="goToSwiperPage"
@@ -32,7 +32,7 @@
 					<text class="activity-type">{{item.type}}</text>
 				</view>
 			</view>
-			<view style="height: 200rpx;"></view>
+			<view class="cu-tabbar-height"></view>
 		</u-list>
 	</view>
 </template>
@@ -329,5 +329,10 @@
 			line-height: 23rpx;
 			height: 25rpx;
 		}
+	}
+	.savepadding{
+	    padding-bottom: constant(safe-area-inset-bottom);  
+	    padding-bottom: env(safe-area-inset-bottom); 
+	    box-sizing: content-box;
 	}
 </style>

@@ -10,8 +10,7 @@
         },{
 		"path": "pages/home/home",
 		"style": {
-			"enablePullDownRefresh": false,
-			"disableScroll": true
+			"enablePullDownRefresh": false
 		}
 
 	}, {

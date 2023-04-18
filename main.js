@@ -25,3 +25,4 @@ export function createApp() {
   }
 }
 // #endif
+Vue.prototype.base_url = "http://192.168.110.21:9001" //指向服务器的IP地址

@@ -5,24 +5,27 @@
 		</view>
 		<view class="input-View">
 			<text id="uid-Text">请输入你的学号:</text>
-			<input id="uid-Input" v-model="uid" />
+			<input id="uid-Input" v-model="userInfo.uid" />
 			<view class="upassword-View">
 				<text id="upassword-Text">请输入你的密码:</text>
 				<button id="showPassword-Button" @click="changeShow()">{{show_Text}}</button>
 			</view>
-			<input id="upassword-Input" v-model="uPassword" :password="show_Flag" />
-			<button id="login-Button">登录</button>
+			<input id="upassword-Input" v-model="userInfo.upassword" :password="show_Flag" password-icon="true"/>
+			<button id="login-Button" @click="login()">登录</button>
 		</view>
 	</view>
 </template>
 
 <script>
+import icon from '../../uni_modules/uview-ui/libs/config/props/icon'
 	export default {
 		data() {
 			return {
 				image_url:"/static/other-img/login-top-img.jpg",
-				uid: "19401190216",
-				uPassword: "1234",
+				userInfo:{
+					uid: "19401190216",
+					upassword: "123456",
+				},
 				show_Flag: true,
 				show_Text: "显示密码"
 			}
@@ -37,6 +40,33 @@
 					this.show_Text = "显示密码"
 					this.show_Flag = true
 				}
+			},
+			// 此方法用于登录
+			login(){
+				var _this = this
+				uni.request({
+					url: _this.base_url + "/user/login",
+					method: "POST",
+					header: {
+						'content-type': 'application/json;charset:utf-8'
+					},
+					data:this.userInfo,
+					sslVerify: false,
+					success: (res) => {
+						if(res.data.code == 20000){
+							uni.switchTab({
+								url:"/pages/home/home"
+							})
+						}else{
+							console.log(res.data),
+							uni.showToast({
+								title:res.data.message,
+								icon:"error",
+								duration:2000,
+							})
+						}
+					}
+				})
 			}
 		}
 	}
