@@ -23,16 +23,19 @@
 			<view class="section-Title-View">最新活动</view>
 			<view class="activity-View-Flex">
 				<view class="activity-List-View" v-for="(item,index) in activityList" :key="index"
-					@click="goToActivityPage(item.url)">
-					<image class="activity-Img" :src="item.img_url" mode="aspectFit">
-						<text class="activity-Status">{{item.status}}</text>
+					@click="goToActivityPage(item.aid)">
+					<image class="activity-Img" :src="item.aimage" mode="aspectFit">
+						<text class="activity-Status">{{item.astatus}}</text>
 					</image>
-					<text class="activity-title">{{item.title}}</text>
-					<text class="activity-dateTime">{{item.date_Time}}</text>
-					<text class="activity-type">{{item.type}}</text>
+					<text class="activity-title">{{item.aname.length>11?item.aname.substring(0,11)+'..':item.aname}}</text>
+					<text class="activity-dateTime">
+						{{item.astarttime.substring(0,10).replace(new RegExp("-","g"),".") + " "}}-{{" " + item.aendtime.substring(0,10).replace(new RegExp("-","g"),".")}}
+					</text>
 				</view>
 			</view>
-			<view class="cu-tabbar-height"></view>
+			<view class="bottom-View">
+				到底啦！！！
+			</view>
 		</u-list>
 	</view>
 </template>
@@ -80,92 +83,24 @@
 					url: "infoPage4",
 					img_url: "/static/infoPage-img/explore.png"
 				}],
-				activityList: [{
-					title: "活动1",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动1",
-					img_url: "/static/swiper-img/1.jpg"
-				}, {
-					title: "活动2",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动2",
-					img_url: "/static/swiper-img/2.png"
-				}, {
-					title: "活动3",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动3",
-					img_url: "/static/swiper-img/3.jpg"
-				}, {
-					title: "活动4",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动4",
-					img_url: "/static/swiper-img/4.png"
-				}, {
-					title: "活动1",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动1",
-					img_url: "/static/swiper-img/1.jpg"
-				}, {
-					title: "活动2",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动2",
-					img_url: "/static/swiper-img/2.png"
-				}, {
-					title: "活动3",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动3",
-					img_url: "/static/swiper-img/3.jpg"
-				}, {
-					title: "活动4",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动4",
-					img_url: "/static/swiper-img/4.png"
-				}, {
-					title: "活动1",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动1",
-					img_url: "/static/swiper-img/1.jpg"
-				}, {
-					title: "活动2",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动2",
-					img_url: "/static/swiper-img/2.png"
-				}, {
-					title: "活动3",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动3",
-					img_url: "/static/swiper-img/3.jpg"
-				}, {
-					title: "活动4",
-					date_Time: "0000.00.00 - 0000.00.00",
-					type: "文体",
-					status: "报名中",
-					url: "活动4",
-					img_url: "/static/swiper-img/4.png"
-				}]
+				activityList: []
 			};
+		},
+		onLoad() {
+			var that = this
+			uni.request({
+				url: that.base_url + "/activity/some",
+				method: "POST",
+				header: {
+					'content-type': 'application/json;charset:utf-8'
+				},
+				sslVerify: false,
+				success: (res) => {
+					if (res.data.code == 20000) {
+						that.activityList = res.data.data
+					}
+				}
+			})
 		},
 		methods: {
 			// 点击轮播图时的页面跳转函数
@@ -198,10 +133,11 @@
 					}
 				})
 			},
-			goToActivityPage(page_url) {
-				console.log("goToActivityPage" + page_url);
+			// 跳转至活动详情页
+			goToActivityPage(aid) {
+				console.log("goToActivityPage" + aid);
 				uni.navigateTo({
-					url: page_url,
+					url: aid,
 					success: (res) => {
 						console.log("前往失败")
 					},
@@ -276,8 +212,8 @@
 		margin-left: 30rpx;
 
 		.activity-List-View {
-			height: 300rpx;
-			min-height: 300rpx;
+			height: 310rpx;
+			min-height: 310rpx;
 			width: 330rpx;
 			min-width: 330rpx;
 			max-width: 330rpx;
@@ -288,9 +224,9 @@
 		.activity-Status {
 			font-size: 20rpx;
 			text-align: center;
-			line-height: 30rpx;
-			height: 30rpx;
-			width: 100rpx;
+			line-height: 35rpx;
+			height: 35rpx;
+			width: 90rpx;
 			min-width: 100rpx;
 			top: 20rpx;
 			left: 20rpx;
@@ -311,28 +247,27 @@
 
 		.activity-title {
 			display: block;
-			font-size: 25rpx;
-			line-height: 25rpx;
-			height: 30rpx;
+			height: 35rpx;
+			margin-top: 10rpx;
+			font-size: 30rpx;
+			line-height: 35rpx;
 		}
 
 		.activity-dateTime {
 			display: block;
-			font-size: 20rpx;
-			line-height: 20rpx;
 			height: 30rpx;
-		}
-
-		.activity-type {
-			display: block;
-			font-size: 23rpx;
-			line-height: 23rpx;
-			height: 25rpx;
+			margin-top: 20rpx;
+			font-size: 25rpx;
+			line-height: 30rpx;
+			color: #ffaa00;
 		}
 	}
-	.savepadding{
-	    padding-bottom: constant(safe-area-inset-bottom);  
-	    padding-bottom: env(safe-area-inset-bottom); 
-	    box-sizing: content-box;
+
+	.bottom-View {
+		min-height: 150rpx;
+		font-size: 35rpx;
+		line-height: 150rpx;
+		text-align: center;
+		color: #cbc4d4;
 	}
 </style>
