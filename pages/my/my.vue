@@ -15,15 +15,23 @@
 						<text>{{user.uclass==null?'':user.uclass}}</text>
 					</view>
 				</view>
-				<view id="corp_View" v-if="code==20010">
-					<view id="corp_name">社团：{{corp.cname}}</view>
+				<view id="corp_View" v-if="code==20100">
+					<view id="corp_name">{{corp.cname=="管理"?"":"社团："+corp.cname}}</view>
 					<view id="corp_level">身份：{{cmlevel}}</view>
 				</view>
 			</view>
 			<view class="operation-View" :style="{'height':windowHeight + 'px'}">
-				<view class="operation-Button-View" v-if="code==20010" @click="gotoCreate()">
+				<view class="operation-Button-View" v-if="cmlevel=='部门人员'||cmlevel=='社长'" @click="gotoCreate()">
 					<image class="operation-Image" src="/static/icon/create.png" mode="aspectFit"></image>
 					<text class="operation-Text">创建活动</text>
+				</view>
+				<view class="operation-Button-View" v-if="cmlevel=='管理员'" @click="gotoProcessList()">
+					<image class="operation-Image" src="/static/icon/process.png" mode="aspectFit"></image>
+					<text class="operation-Text">审核活动</text>
+				</view>
+				<view class="operation-Button-View" v-if="cmlevel=='管理员'" @click="gotoChangePwd()">
+					<image class="operation-Image" src="/static/icon/changepwd.png" mode="aspectFit"></image>
+					<text class="operation-Text">更改用户密码</text>
 				</view>
 			</view>
 			<view class="account-View">
@@ -69,6 +77,24 @@
 					}
 				})
 			},
+			gotoChangePwd(){
+				var that = this
+				uni.navigateTo({
+					url:"/pages/other/changepwd?uid=" + that.user.uid,
+					success: (res) => {
+						console.log("前往changepwd页面" + "/pages/other/changepwd?uid=" + that.user.uid)
+					}
+				})
+			},
+			gotoProcessList(){
+				var that = this
+				uni.navigateTo({
+					url:"/pages/activity/processlist?uid=" + that.user.uid,
+					success: (res) => {
+						console.log("前往processlist页面" + "/pages/activity/processlist?uid=" + that.user.uid)
+					}
+				})
+			},
 			// 获取用户信息
 			getMyInfo() {
 				var that = this
@@ -87,7 +113,7 @@
 					success: function(resStorage) {
 						console.log(resStorage.data)
 						that.code = resStorage.data
-						if (that.code == 20010) {
+						if (that.code == 20100) {
 							uni.getStorage({
 								key: "corp",
 								success: function(resCorp) {
@@ -110,7 +136,7 @@
 			goTologin() {
 				uni.clearStorage();
 				uni.reLaunch({
-					url: "/pages/other/login",
+					url: "/pages/my/login",
 					success: (res) => {
 						console.log("前往登录页")
 					}
@@ -195,7 +221,7 @@
 	.operation-View {
 		display: flex;
 		flex-direction: row;
-		justify-content: space-between;
+		justify-content: left;
 		flex-wrap: wrap;
 	}
 

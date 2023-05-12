@@ -139,6 +139,7 @@
 			// 列发生变化时触发
 			change(e) {
 				const { indexs, values } = e
+				console.log(values)
 				let selectValue = ''
 				if(this.mode === 'time') {
 					// 根据value各列索引，从各列数组中，取出当前时间的选中值

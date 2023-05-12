@@ -3,36 +3,59 @@
 		<u-list class="uList">
 			<!-- 搜索框 -->
 			<view class="search-Box-View">
-				搜索框占位
+				<input type="text" class="search-Box-Input" v-model="searchText" placeholder="请输入要搜索的内容吧!" @confirm="searchConfirm">
+				<icon type="search" class="search-Box-Icon" @click="searchConfirm"></icon>
 			</view>
-			<view class="swiper-View">
-				<u-swiper :list="swiperList" keyName="img" indicator="true" indicatorMode="dot" circular="true"
-					radius="true" previousMargin="70rpx" nextMargin="70rpx" @click="goToSwiperPage"
-					@change="swiperChange"></u-swiper>
-			</view>
-			<view>
-				<view class="infoPage-View-Flex">
-					<view class="infoPage-View" v-for="(item,index) in infoPageList" :key="index">
-						<image class="infoPage-img" :src="item.img_url" mode="aspectFit"
-							@click="goToInfoPage(item.url)"></image>
-						<text>{{item.title}}</text>
+			<!-- 显示搜索的结果界面 -->
+			<view v-if="searchShow">
+				<view class="section-Title-View">搜索：{{searchTitle}}的结果</view>
+				<view class="activity-View-Flex">
+					<view class="activity-List-View" v-for="(item,index) in searchActivityList" :key="index"
+						@click="goToActivityPage(item.aid)">
+						<image class="activity-Img" :src="item.aimage" mode="aspectFit">
+							<text class="activity-Status">{{item.astatus}}</text>
+						</image>
+						<text
+							class="activity-title">{{item.aname.length>11?item.aname.substring(0,11)+'..':item.aname}}</text>
+						<text class="activity-dateTime">
+							{{item.astarttime.substring(0,10).replace(new RegExp("-","g"),".") + " "}}-{{" " + item.aendtime.substring(0,10).replace(new RegExp("-","g"),".")}}
+						</text>
 					</view>
 				</view>
 			</view>
-			<!-- 此处为最新活动段落 -->
-			<view class="section-Title-View">最新活动</view>
-			<view class="activity-View-Flex">
-				<view class="activity-List-View" v-for="(item,index) in activityList" :key="index"
-					@click="goToActivityPage(item.aid)">
-					<image class="activity-Img" :src="item.aimage" mode="aspectFit">
-						<text class="activity-Status">{{item.astatus}}</text>
-					</image>
-					<text class="activity-title">{{item.aname.length>11?item.aname.substring(0,11)+'..':item.aname}}</text>
-					<text class="activity-dateTime">
-						{{item.astarttime.substring(0,10).replace(new RegExp("-","g"),".") + " "}}-{{" " + item.aendtime.substring(0,10).replace(new RegExp("-","g"),".")}}
-					</text>
+			<!-- 显示基础界面 -->
+			<view v-else>
+				<view class="swiper-View">
+					<u-swiper :list="swiperList" keyName="img" indicator="true" indicatorMode="dot" circular="true"
+						radius="true" previousMargin="70rpx" nextMargin="70rpx" @click="goToSwiperPage"
+						@change="swiperChange"></u-swiper>
+				</view>
+				<view>
+					<view class="infoPage-View-Flex">
+						<view class="infoPage-View" v-for="(item,index) in infoPageList" :key="index">
+							<image class="infoPage-img" :src="item.img_url" mode="aspectFit"
+								@click="goToInfoPage(item.url)"></image>
+							<text>{{item.title}}</text>
+						</view>
+					</view>
+				</view>
+				<!-- 此处为最新活动段落 -->
+				<view class="section-Title-View">最新活动</view>
+				<view class="activity-View-Flex">
+					<view class="activity-List-View" v-for="(item,index) in activityList" :key="index"
+						@click="goToActivityPage(item.aid)">
+						<image class="activity-Img" :src="item.aimage" mode="aspectFit">
+							<text class="activity-Status">{{item.astatus}}</text>
+						</image>
+						<text
+							class="activity-title">{{item.aname.length>11?item.aname.substring(0,11)+'..':item.aname}}</text>
+						<text class="activity-dateTime">
+							{{item.astarttime.substring(0,10).replace(new RegExp("-","g"),".") + " "}}-{{" " + item.aendtime.substring(0,10).replace(new RegExp("-","g"),".")}}
+						</text>
+					</view>
 				</view>
 			</view>
+			
 			<view class="bottom-View">
 				到底啦！！！
 			</view>
@@ -48,6 +71,10 @@
 	export default {
 		data() {
 			return {
+				searchText: "",
+				searchTitle:"",
+				searchActivityList:[],
+				searchShow:false,
 				swiperList: [{
 						img: "/static/swiper-img/1.jpg",
 						url: "swiperPage1"
@@ -70,10 +97,6 @@
 					title: "最新资讯",
 					url: "infoPage1",
 					img_url: "/static/infoPage-img/news.png"
-				}, {
-					title: "院校活动",
-					url: "infoPage2",
-					img_url: "/static/infoPage-img/activity-info.png"
 				}, {
 					title: "热门活动",
 					url: "infoPage3",
@@ -103,6 +126,40 @@
 			})
 		},
 		methods: {
+			// 对输入的内容进行搜索
+			searchConfirm() {
+				var that = this
+				if (that.searchText.length != 0) {
+					that.searchShow = true
+					that.searchTitle = that.searchText
+					uni.request({
+						url: that.base_url + "/activity/search",
+						method: "POST",
+						data: {
+							searchText: that.searchText,
+						},
+						header: {
+							'content-type': 'application/json;charset:utf-8'
+						},
+						sslVerify: false,
+						success: (res) => {
+							console.log(res.data.code == 20000)
+							if (res.data.code == 20000) {
+								that.searchActivityList = res.data.data.activitylist
+							}
+						}
+					})
+				} else {
+					that.searchShow = false
+					that.searchTitle = that.searchText
+					that.searchActivityList = []
+					uni.showToast({
+						title: "搜索内容不得为空",
+						icon: 'none',
+						duration: 2000
+					})
+				}
+			},
 			// 点击轮播图时的页面跳转函数
 			goToSwiperPage() {
 				const page_url = this.swiperList[this.swiperIndex].url;
@@ -135,11 +192,10 @@
 			},
 			// 跳转至活动详情页
 			goToActivityPage(aid) {
-				console.log("goToActivityPage" + aid);
 				uni.navigateTo({
-					url: aid,
+					url: "/pages/activity/detail?aid=" + aid,
 					success: (res) => {
-						console.log("前往失败")
+						console.log("前往成功" + aid)
 					},
 					fail: (res) => {
 						console.log("前往失败")
@@ -152,15 +208,31 @@
 
 <style lang="scss">
 	.search-Box-View {
-		height: 100rpx;
-		width: 750rpx;
-		margin-top: 35rpx;
-		margin-bottom: 35rpx;
-		border: 1px solid red;
-		text-align: center;
-		line-height: 100rpx;
-		position: relative;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		height: 60rpx;
+		width: 670rpx;
+		margin: 35rpx 20rpx 20rpx 20rpx;
+		padding: 10rpx 20rpx 10rpx 20rpx;
+		border: 1px solid #ff6699;
+		border-radius: 25rpx;
 		background: white;
+	}
+
+	.search-Box-Input {
+		height: 60rpx;
+		width: 630rpx;
+		font-size: 35rpx;
+		line-height: 60rpx;
+	}
+
+	.search-Box-Icon {
+		height: 40rpx;
+		width: 40rpx;
+		margin: 10rpx 0rpx 10rpx 0rpx;
+		font-size: 40rpx;
+		line-height: 40rpx;
 	}
 
 	.uList {
@@ -242,7 +314,6 @@
 			min-height: 200rpx;
 			width: 320rpx;
 			border-radius: 20rpx;
-
 		}
 
 		.activity-title {

@@ -25,12 +25,12 @@
 			>{{ title }}</text>
 			<view
 				class="u-modal__content"
+				 style="height: 150rpx; display:flex;flex-direction: column;"
 				:style="{
 					paddingTop: `${title ? 12 : 25}px`
 				}"
 			>
-				<slot>
-					<text class="u-modal__content__text">{{ content }}</text>
+				<slot  style="height: 150rpx; display:flex;flex-direction: column;">
 				</slot>
 			</view>
 			<view
@@ -164,6 +164,7 @@
 
 	.u-modal {
 		width: 650rpx;
+		height: 370rpx;
 		border-radius: $u-modal-border-radius;
 		overflow: hidden;
 
@@ -176,7 +177,7 @@
 		}
 
 		&__content {
-			padding: 12px 25px 25px 25px;
+			padding: 12px 25px 0px 25px;
 			@include flex;
 			justify-content: center;
 

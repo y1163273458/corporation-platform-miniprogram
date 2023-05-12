@@ -1,11 +1,13 @@
 <template>
 	<view>
-
+		<view class="empty-View" v-if="activityList.length == 0">
+			<text>暂无申请</text>
+		</view>
 		<view class="activity-View-Flex">
 			<view class="activity-List-View" v-for="(item,index) in activityList" :key="index"
-				@click="goToActivityPage(item.aid,item.pstatus)">
+				@click="goToProcessPage(item.aid)">
 				<image class="activity-Img" :src="item.aimage" mode="aspectFit">
-					<text class="activity-Status">{{item.astatus==null?item.pstatus:item.astatus}}</text>
+					<text class="activity-Status">{{item.pstatus}}</text>
 				</image>
 				<text class="activity-title">{{item.aname.length>11?item.aname.substring(0,11)+'..':item.aname}}</text>
 				<text class="activity-dateTime">
@@ -20,15 +22,13 @@
 	export default {
 		data() {
 			return {
-				user: {},
-				corp: {},
-				code: 0,
-				cmlevel: 0,
+				uid: "",
 				activityList: []
 			};
 		},
-		onLoad() {
-			this.getMyInfo()
+		onLoad(obj) {
+			var that = this
+			that.uid = obj.uid
 		},
 		onShow() {
 			this.getActivity()
@@ -37,10 +37,10 @@
 			getActivity() {
 				var that = this
 				uni.request({
-					url: that.base_url + "/activity/myactivity",
+					url: that.base_url + "/activity/processlist",
 					method: "POST",
 					data: {
-						uid: that.user.uid,
+						uid: that.uid,
 					},
 					header: {
 						'content-type': 'application/json;charset:utf-8'
@@ -48,59 +48,16 @@
 					sslVerify: false,
 					success: (res) => {
 						console.log(res)
-						if (res.data.code == 20100) {
+						if (res.data.code == 20200) {
 							that.activityList = res.data.data.activityList
 						}
 					}
 				})
 			},
-			getMyInfo() {
+			goToProcessPage(aid){
 				var that = this
-				uni.getStorage({
-					key: "user",
-					success: function(resStorage) {
-						console.log(resStorage.data)
-						that.user = resStorage.data
-					},
-					fail: (err) => {
-						console.log(err)
-					}
-				})
-				uni.getStorage({
-					key: "code",
-					success: function(resStorage) {
-						console.log(resStorage.data)
-						that.code = resStorage.data
-						if (that.code == 20100) {
-							uni.getStorage({
-								key: "corp",
-								success: function(resCorp) {
-									console.log(resCorp.data)
-									that.corp = resCorp.data
-									that.getActivity()
-								},
-								fail: (err) => {
-									console.log(err)
-								}
-							})
-						}
-					},
-					fail: (err) => {
-						console.log(err)
-					}
-				})
-			},
-			goToActivityPage(aid,status){
-				var that = this
-				let page =""
-				console.log(status)
-				if(status != "未通过"){
-					page = "detail"
-				}else{
-					page = "create"
-				}
 				uni.navigateTo({
-					url:"/pages/activity/" + page + "?aid=" + aid,
+					url:"/pages/activity/process?aid=" + aid +"&uid=" + that.uid,
 				})
 			}
 		}
@@ -108,6 +65,12 @@
 </script>
 
 <style lang="scss">
+	.empty-View{
+		height: 500rpx;
+		width: 750rpx;
+		text-align: center;
+		line-height: 500rpx;
+	}
 	.activity-View-Flex {
 		display: flex;
 		flex-direction: row;

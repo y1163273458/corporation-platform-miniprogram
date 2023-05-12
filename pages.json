@@ -1,6 +1,6 @@
 {
 	"pages": [{
-		"path": "pages/other/login",
+		"path": "pages/my/login",
 		"style": {
 			"navigationBarTitleText": "",
 			"enablePullDownRefresh": false
@@ -55,6 +55,54 @@
             }
             
         }
+        ,{
+            "path" : "pages/activity/detail",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/activity/processlist",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/activity/process",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/other/news",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/other/adduser",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/other/changepwd",
+            "style" :                                                                                    
+            {
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"tabBar": {
 		"color": "#f9cfd1",
@@ -67,7 +115,7 @@
 			},
 			{
 				"pagePath": "pages/activity/activity",
-				"text": "我的活动",
+				"text": "活动",
 				"iconPath": "static/tabbar-icon/activity.png",
 				"selectedIconPath": "static/tabbar-icon/activity-active.png"
 			},

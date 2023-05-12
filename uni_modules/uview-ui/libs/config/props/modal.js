@@ -17,7 +17,7 @@ export default {
         cancelText: '取消',
         showConfirmButton: true,
         showCancelButton: false,
-        confirmColor: '#2979ff',
+        confirmColor: '#ff6699',
         cancelColor: '#606266',
         buttonReverse: false,
         zoom: true,

@@ -1,7 +1,11 @@
 <template>
 	<view>
+		<view class="switch-View">
+			<u-subsection :list="switchList" mode="subsection" :current="curindex" @change="sectionChange"
+				fontSize="28rpx" activeColor="#ffaaaa" bold="false" />
+		</view>
 		<view>
-			<scroll-view class="scroll-View" scroll-y="true" :style="{'height': scrollHeight + 'px'}">
+			<scroll-view class="scroll-View" scroll-y="true" :style="{'height': scrollHeight *2 + 'rpx'}">
 				<view :class="item.nstatus=='未读'?'message-Box-Not-Read':'message-Box-Read'" v-if="showWhat(curindex,item.nstatus)"
 					v-for="(item,index) in messageContentList" :key="index" @click="goToDetail(item.nid)">
 					<view class="message-Box-Top">
@@ -16,10 +20,6 @@
 					</view>
 				</view>
 			</scroll-view>
-		</view>
-		<view class="switch-View">
-			<u-subsection :list="switchList" mode="subsection" :current="curindex" @change="sectionChange"
-				fontSize="28rpx" activeColor="#ffaaaa" bold="false" />
 		</view>
 	</view>
 </template>
@@ -39,9 +39,12 @@
 				scrollHeight: 0
 			};
 		},
-		onLoad() {
+		onShow() {
 			// 加载界面时获取消息
 			this.getMessage()
+		},
+		onLoad() {
+			
 			var that = this
 			uni.getSystemInfo({
 				success: (res) => {
